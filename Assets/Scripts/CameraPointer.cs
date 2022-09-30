@@ -44,7 +44,7 @@ public class CameraPointer : MonoBehaviour
         // Casts ray towards camera's forward direction, to detect if a GameObject is being gazed
         // at.
         RaycastHit hit;
-        Outline outline = _gazedAtObject?.GetComponent(typeof(Outline)) as Outline;;
+        Outline outline = _gazedAtObject?.GetComponent(typeof(Outline)) as Outline;
         if (Physics.Raycast(transform.position, transform.forward, out hit, _maxDistance))
         {
             // GameObject detected in front of the camera, different game object.
@@ -66,8 +66,9 @@ public class CameraPointer : MonoBehaviour
             }
             // If time greater than timer, activate
             if (_gazeTime >= _gazeTimer) {
-                // Add delta Time
-                outline.enabled = false;
+                if (outline != null) {
+                    outline.enabled = false;
+                }
                 _gazeTime = _gazeTimer;
                 _gazedAtObject.SendMessage("OnPointerEnter");
             }
@@ -76,9 +77,13 @@ public class CameraPointer : MonoBehaviour
         else
         {
             // No GameObject detected in front of the camera.
+            if (outline != null) {
+                outline.enabled = false;
+            }
             _gazedAtObject?.SendMessage("OnPointerExit");
             _gazedAtObject = null;
             _gazeTime = 0.0f;
+            reticle.fillAmount = _gazeTime / _gazeTimer;
         }
 
         // Checks for screen touches.
