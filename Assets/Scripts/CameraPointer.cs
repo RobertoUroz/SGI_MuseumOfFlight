@@ -18,6 +18,7 @@
 
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Sends messages to gazed GameObject.
@@ -27,6 +28,14 @@ public class CameraPointer : MonoBehaviour
     private const float _maxDistance = 10;
     private GameObject _gazedAtObject = null;
 
+    //Reticle of timer
+    public Image reticle;
+
+    //Timer for gaze pointer
+    private float _gazeTime = 0.0f;
+    public float _gazeTimer = 2f; //In Seconds
+
+
     /// <summary>
     /// Update is called once per frame.
     /// </summary>
@@ -35,22 +44,41 @@ public class CameraPointer : MonoBehaviour
         // Casts ray towards camera's forward direction, to detect if a GameObject is being gazed
         // at.
         RaycastHit hit;
+        Outline outline = _gazedAtObject?.GetComponent(typeof(Outline)) as Outline;;
         if (Physics.Raycast(transform.position, transform.forward, out hit, _maxDistance))
         {
-            // GameObject detected in front of the camera.
+            // GameObject detected in front of the camera, different game object.
             if (_gazedAtObject != hit.transform.gameObject)
             {
-                // New GameObject.
+                if (outline != null) {
+                    outline.enabled = false;
+                }
                 _gazedAtObject?.SendMessage("OnPointerExit");
                 _gazedAtObject = hit.transform.gameObject;
+                _gazeTime = 0.0f;
+            } else if (_gazedAtObject.tag == "IsActivable") { // Check whether tag of gameobject is isActivable, for not having the reticle loading always
+                // Detecting same gameObject which is isActivable
+                _gazeTime += Time.deltaTime;
+                outline = _gazedAtObject.GetComponent(typeof(Outline)) as Outline;
+                if (outline != null) {
+                    outline.enabled = true;
+                }
+            }
+            // If time greater than timer, activate
+            if (_gazeTime >= _gazeTimer) {
+                // Add delta Time
+                outline.enabled = false;
+                _gazeTime = _gazeTimer;
                 _gazedAtObject.SendMessage("OnPointerEnter");
             }
+            reticle.fillAmount = _gazeTime / _gazeTimer;
         }
         else
         {
             // No GameObject detected in front of the camera.
             _gazedAtObject?.SendMessage("OnPointerExit");
             _gazedAtObject = null;
+            _gazeTime = 0.0f;
         }
 
         // Checks for screen touches.
@@ -59,4 +87,5 @@ public class CameraPointer : MonoBehaviour
             _gazedAtObject?.SendMessage("OnPointerClick");
         }
     }
+
 }
