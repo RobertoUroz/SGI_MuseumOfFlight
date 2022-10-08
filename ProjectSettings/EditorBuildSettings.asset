@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/SGI/Scenes/HelloCardboard.unity
+    path: Assets/Scenes/NivelPrincipal.unity
     guid: 145a2a45d7bc746b19cb68410368bf96
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: ae0934497e14777b3a82f8d9e1aa9594, type: 2}
