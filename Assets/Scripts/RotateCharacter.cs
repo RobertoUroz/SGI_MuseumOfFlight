@@ -7,9 +7,9 @@ public class RotateCharacter : MonoBehaviour
 
     public float mouseSensitivity = 100f;
 
-    public Transform playerBody;
+    private float xRotation = 0f;
 
-    float xRotation = 0f;
+    private float yRotation = 0f;
 
     void Start()
     {
@@ -25,7 +25,9 @@ public class RotateCharacter : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        playerBody.Rotate(Vector3.up * mouseX);
+        yRotation -= mouseX;
+        yRotation = Mathf.Clamp(90f, yRotation, 90f);
+
+        transform.localRotation = Quaternion.Euler(xRotation, -yRotation, 0f);
     }
 }
