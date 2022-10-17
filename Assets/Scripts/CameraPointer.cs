@@ -35,6 +35,8 @@ public class CameraPointer : MonoBehaviour
     private float _gazeTime = 0.0f;
     public float _gazeTimer = 2f; //In Seconds
 
+    private bool ready;
+
 
     /// <summary>
     /// Update is called once per frame.
@@ -44,12 +46,15 @@ public class CameraPointer : MonoBehaviour
         // Casts ray towards camera's forward direction, to detect if a GameObject is being gazed
         // at.
         RaycastHit hit;
-        Outline outline = _gazedAtObject?.GetComponent(typeof(Outline)) as Outline;
+        Outline outline = _gazedAtObject?.GetComponentInParent(typeof(Outline)) as Outline;
+
         if (Physics.Raycast(transform.position, transform.forward, out hit, _maxDistance))
         {
             // GameObject detected in front of the camera, different game object.
+            Debug.Log(_gazedAtObject);
             if (_gazedAtObject != hit.transform.gameObject)
             {
+                ready = true;
                 if (outline != null) {
                     outline.enabled = false;
                 }
@@ -59,18 +64,22 @@ public class CameraPointer : MonoBehaviour
             } else if (_gazedAtObject.tag == "IsActivable") { // Check whether tag of gameobject is isActivable, for not having the reticle loading always
                 // Detecting same gameObject which is isActivable
                 _gazeTime += Time.deltaTime;
-                outline = _gazedAtObject.GetComponent(typeof(Outline)) as Outline;
+                outline = _gazedAtObject.GetComponentInParent(typeof(Outline)) as Outline;
                 if (outline != null) {
                     outline.enabled = true;
                 }
             }
             // If time greater than timer, activate
             if (_gazeTime >= _gazeTimer) {
+                //only call once to OnPointerEnter
+                if (ready) {
+                    _gazedAtObject.SendMessage("OnPointerEnter");
+                    ready = false;
+                }
                 if (outline != null) {
                     outline.enabled = false;
                 }
                 _gazeTime = _gazeTimer;
-                _gazedAtObject.SendMessage("OnPointerEnter");
             }
             reticle.fillAmount = _gazeTime / _gazeTimer;
         }
@@ -81,16 +90,17 @@ public class CameraPointer : MonoBehaviour
                 outline.enabled = false;
             }
             _gazedAtObject?.SendMessage("OnPointerExit");
+            ready = true;
             _gazedAtObject = null;
             _gazeTime = 0.0f;
             reticle.fillAmount = _gazeTime / _gazeTimer;
         }
 
         // Checks for screen touches.
-        if (Google.XR.Cardboard.Api.IsTriggerPressed)
+        /*if (Google.XR.Cardboard.Api.IsTriggerPressed)
         {
             _gazedAtObject?.SendMessage("OnPointerClick");
-        }
+        }*/
     }
 
 }
