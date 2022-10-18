@@ -4,5 +4,5 @@ using UnityEngine;
 
 public static class StaticClass 
 {
-    public static string CrossSceneInformation;
+    public static string CrossSceneInformation = "P38J Lightning";
 }
