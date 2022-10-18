@@ -16,15 +16,16 @@ public class MoveCharacter : MonoBehaviour
     Vector3 velocity;
     bool isGrounded;
 
+    //Para ver si se puede mover o esta en un modo alternativo de explorar
+    bool canMove;
+
     void Start()
     {
+        canMove = true;
     }
 
     void Update()
     {
-
-        if(Input.anyKeyDown)
-            Debug.Log("AAAAAA: " + Input.inputString);
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
@@ -33,17 +34,29 @@ public class MoveCharacter : MonoBehaviour
             velocity.y = -2f;
         }
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        if (canMove) {
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
 
-        Vector3 move = transform.right * x + transform.forward * z;
+            Vector3 move = transform.right * x + transform.forward * z;
 
-        controller.Move(move * speed * Time.deltaTime);
+            controller.Move(move * speed * Time.deltaTime);
 
-        velocity.y += gravity * Time.deltaTime;
+            velocity.y += gravity * Time.deltaTime;
 
-        controller.Move(velocity * Time.deltaTime);
+            controller.Move(velocity * Time.deltaTime);
+        }
 
 
     }
+
+    void Movimiento() {
+        canMove = true;
+    }
+
+    void Quieto() {
+        canMove = false;
+    }
+
+
 }
