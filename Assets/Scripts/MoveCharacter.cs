@@ -7,7 +7,7 @@ public class MoveCharacter : MonoBehaviour
     public CharacterController controller;
 
     private float speed = 12f;
-    private float gravity = -9.81f;
+    private float gravity = -999.81f;
 
     public Transform groundCheck;
     private float groundDistance = 0.4f;

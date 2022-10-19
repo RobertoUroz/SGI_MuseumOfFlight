@@ -51,6 +51,7 @@ public class PlaneController : MonoBehaviour
     {
         //Se abre la pantalla del menu con la info del avion
         nombreAvion.text = _namePlane;
+        StaticClass.CrossSceneInformation = _namePlane;
         switch (_namePlane) {
             case "Fighter Interceptor":
                 buttonSubirse.SetActive(true);
@@ -69,8 +70,6 @@ public class PlaneController : MonoBehaviour
     /// </summary>
     public void OnPointerExit()
     {
-        //Se quita la pantalla del menu
-        //menu.SetActive(false);
-        //nombreAvion.text = "";
+        Debug.Log("OnPointerExit Plane");
     }
 }

@@ -37,6 +37,13 @@ public class CameraPointer : MonoBehaviour
 
     private bool ready;
 
+    private AudioSource m_MyAudioSource;
+
+    public void Start()
+    {
+        m_MyAudioSource = GetComponent<AudioSource>();
+    }
+
 
     /// <summary>
     /// Update is called once per frame.
@@ -73,6 +80,7 @@ public class CameraPointer : MonoBehaviour
             if (_gazeTime >= _gazeTimer) {
                 //only call once to OnPointerEnter
                 if (ready) {
+                    this.m_MyAudioSource.Play();
                     _gazedAtObject.SendMessage("OnPointerEnter");
                     ready = false;
                 }

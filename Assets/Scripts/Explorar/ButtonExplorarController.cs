@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-
-public class ButtonController : MonoBehaviour
+public class ButtonExplorarController : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Text nombreAvion;
     void Start()
     {
         
@@ -23,11 +20,11 @@ public class ButtonController : MonoBehaviour
     public void OnPointerEnter()
     {
         //Mira que nombre tiene y va a la escena indicada con el valor del texto que tiene el nombre avion
-        if (this.name.Equals("Explorar")) {
-            SceneManager.LoadScene("Explorar");
+        if (this.name.Equals("Si")) {
+            SceneManager.LoadScene("NivelPrincipal");
         }
         else  {
-            SceneManager.LoadScene("Subirse");
+            transform.parent.position = new Vector3(0, -1.873f, 0);
         }
     }
 
