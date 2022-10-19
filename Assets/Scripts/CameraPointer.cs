@@ -51,7 +51,7 @@ public class CameraPointer : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.forward, out hit, _maxDistance))
         {
             // GameObject detected in front of the camera, different game object.
-            Debug.Log(_gazedAtObject);
+            //Debug.Log(_gazedAtObject);
             if (_gazedAtObject != hit.transform.gameObject)
             {
                 ready = true;
