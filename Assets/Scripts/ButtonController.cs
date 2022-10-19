@@ -23,8 +23,7 @@ public class ButtonController : MonoBehaviour
     public void OnPointerEnter()
     {
         //Mira que nombre tiene y va a la escena indicada con el valor del texto que tiene el nombre avion
-        //StaticClass.CrossSceneInformation = nombreAvion.text;
-        if (this.name == "Explorar") {
+        if (this.name.Equals("Explorar")) {
             SceneManager.LoadScene("Explorar");
         }
         else  {
@@ -34,5 +33,6 @@ public class ButtonController : MonoBehaviour
 
     public void OnPointerExit()
     {
+        Debug.Log("OnPointerExit button");
     }
 }

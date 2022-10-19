@@ -45,8 +45,11 @@ public class PlaneExplorarController : MonoBehaviour
         //Si choca, deshacerlo en el mismo frame (update), es decir, restando. Hacer una función de check?
         if (estado.Equals("mover")){
             float y = Input.GetAxis("Vertical");
+            float x = Input.GetAxis("Horizontal");
+            //arriba y abajo
             if (!isCollision || (isCollision && y > 0 && collidedName.Equals("Suelo")) || (isCollision && y < 0 && collidedName.Equals("Techo")))
-                transform.parent.Translate(new Vector3(0, 1.0f, 0) * sensitivity * y * Time.deltaTime, Space.World);
+                //if () //izquierda y derecha (paredes)
+                    transform.parent.Translate(new Vector3(0, 1.0f, 0) * sensitivity * y * Time.deltaTime, Space.World);
         } else if (estado.Equals("rotar")) {
             float x = Input.GetAxis("Horizontal");
             float y = Input.GetAxis("Vertical");
