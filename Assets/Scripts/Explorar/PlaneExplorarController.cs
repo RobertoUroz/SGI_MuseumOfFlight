@@ -25,6 +25,13 @@ public class PlaneExplorarController : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        //Saber que avion cargar
         //Puntero actual
         punteroActual = punteroJugador;
         //Mirar si es el avion elegido por el usuario
@@ -33,33 +40,31 @@ public class PlaneExplorarController : MonoBehaviour
         } else {
             this.transform.parent.gameObject.SetActive(false);
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
         //Cambiar de estado
-        cambioDeEstado();
-
-        //TODO: Para la colision: hacer el cambio de transform (escalar, mover, rotar). 
-        //Si choca, deshacerlo en el mismo frame (update), es decir, restando. Hacer una función de check?
-        if (estado.Equals("mover")){
-            float y = Input.GetAxis("Vertical");
-            float x = Input.GetAxis("Horizontal");
-            //arriba y abajo
-            if (!isCollision || (isCollision && y > 0 && collidedName.Equals("Suelo")) || (isCollision && y < 0 && collidedName.Equals("Techo")))
-                //if () //izquierda y derecha (paredes)
-                    transform.parent.Translate(new Vector3(0, 1.0f, 0) * sensitivity * y * Time.deltaTime, Space.World);
-        } else if (estado.Equals("rotar")) {
-            float x = Input.GetAxis("Horizontal");
-            float y = Input.GetAxis("Vertical");
-            if (!isCollision)
-                transform.parent.Rotate(y * rotationSensitivity * Time.deltaTime, 0, -1.0f * x * rotationSensitivity * Time.deltaTime);
-        } else if (estado.Equals("escalar")) {
-            float scale = Input.GetAxis("Vertical");
-            Vector3 newScale = transform.parent.localScale + (new Vector3(1, 1, 1) * scale * Time.deltaTime);
-            if ((newScale.x > 0.1 && newScale.y > 0.1 && newScale.z > 0.1 && ((isCollision && scale < 0) || !isCollision)))
-                transform.parent.localScale = newScale; 
+        if (StaticClass.exploreMode)
+        {
+            cambioDeEstado();
+            //TODO: Para la colision: hacer el cambio de transform (escalar, mover, rotar). 
+            //Si choca, deshacerlo en el mismo frame (update), es decir, restando. Hacer una función de check?
+            if (estado.Equals("mover")){
+                float y = Input.GetAxis("Vertical");
+                float x = Input.GetAxis("Horizontal");
+                //arriba y abajo
+                if (!isCollision || (isCollision && y > 0 && collidedName.Equals("Suelo")) || (isCollision && y < 0 && collidedName.Equals("Techo")))
+                    //if () //izquierda y derecha (paredes)
+                        transform.parent.Translate(new Vector3(0, 1.0f, 0) * sensitivity * y * Time.deltaTime, Space.World);
+            } else if (estado.Equals("rotar")) {
+                float x = Input.GetAxis("Horizontal");
+                float y = Input.GetAxis("Vertical");
+                if (!isCollision)
+                    transform.parent.Rotate(y * rotationSensitivity * Time.deltaTime, 0, -1.0f * x * rotationSensitivity * Time.deltaTime);
+            } else if (estado.Equals("escalar")) {
+                float scale = Input.GetAxis("Vertical");
+                Vector3 newScale = transform.parent.localScale + (new Vector3(1, 1, 1) * scale * Time.deltaTime);
+                if ((newScale.x > 0.1 && newScale.y > 0.1 && newScale.z > 0.1 && ((isCollision && scale < 0) || !isCollision)))
+                    transform.parent.localScale = newScale; 
+            }
         }
 
     }

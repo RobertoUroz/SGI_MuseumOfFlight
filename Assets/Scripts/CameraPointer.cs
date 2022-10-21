@@ -42,6 +42,7 @@ public class CameraPointer : MonoBehaviour
     public void Start()
     {
         m_MyAudioSource = GetComponent<AudioSource>();
+        this.FadeIn();
     }
 
 
@@ -53,7 +54,6 @@ public class CameraPointer : MonoBehaviour
         // Casts ray towards camera's forward direction, to detect if a GameObject is being gazed
         // at.
         RaycastHit hit;
-        Outline outline = _gazedAtObject?.GetComponentInParent(typeof(Outline)) as Outline;
 
         if (Physics.Raycast(transform.position, transform.forward, out hit, _maxDistance))
         {
@@ -62,19 +62,12 @@ public class CameraPointer : MonoBehaviour
             if (_gazedAtObject != hit.transform.gameObject)
             {
                 ready = true;
-                if (outline != null) {
-                    outline.enabled = false;
-                }
                 _gazedAtObject?.SendMessage("OnPointerExit");
                 _gazedAtObject = hit.transform.gameObject;
                 _gazeTime = 0.0f;
             } else if (_gazedAtObject.tag == "IsActivable") { // Check whether tag of gameobject is isActivable, for not having the reticle loading always
                 // Detecting same gameObject which is isActivable
                 _gazeTime += Time.deltaTime;
-                outline = _gazedAtObject.GetComponentInParent(typeof(Outline)) as Outline;
-                if (outline != null) {
-                    outline.enabled = true;
-                }
             }
             // If time greater than timer, activate
             if (_gazeTime >= _gazeTimer) {
@@ -84,9 +77,6 @@ public class CameraPointer : MonoBehaviour
                     _gazedAtObject.SendMessage("OnPointerEnter");
                     ready = false;
                 }
-                if (outline != null) {
-                    outline.enabled = false;
-                }
                 _gazeTime = _gazeTimer;
             }
             reticle.fillAmount = _gazeTime / _gazeTimer;
@@ -94,21 +84,21 @@ public class CameraPointer : MonoBehaviour
         else
         {
             // No GameObject detected in front of the camera.
-            if (outline != null) {
-                outline.enabled = false;
-            }
             _gazedAtObject?.SendMessage("OnPointerExit");
             ready = true;
             _gazedAtObject = null;
             _gazeTime = 0.0f;
             reticle.fillAmount = _gazeTime / _gazeTimer;
         }
-
-        // Checks for screen touches.
-        /*if (Google.XR.Cardboard.Api.IsTriggerPressed)
-        {
-            _gazedAtObject?.SendMessage("OnPointerClick");
-        }*/
     }
 
+    public void FadeOut()
+    {
+      CameraFading.CameraFade.Out(2f);
+    }
+
+    public void FadeIn()
+    {
+      CameraFading.CameraFade.In(2f);
+    }
 }
