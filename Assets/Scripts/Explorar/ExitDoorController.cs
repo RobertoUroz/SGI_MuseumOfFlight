@@ -23,4 +23,9 @@ public class ExitDoorController : MonoBehaviour
         //Se abre la pantalla del menu para salir
         menu.SendMessage("GetNewPosition");
     }
+
+    public void OnPointerExit()
+    {
+        Debug.Log("OnPointerExit door");
+    }
 }

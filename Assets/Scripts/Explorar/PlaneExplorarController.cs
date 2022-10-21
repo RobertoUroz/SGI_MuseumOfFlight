@@ -25,24 +25,16 @@ public class PlaneExplorarController : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
+        //Puntero actual
+        punteroActual = punteroJugador;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        //Saber que avion cargar
-        //Puntero actual
-        punteroActual = punteroJugador;
-        //Mirar si es el avion elegido por el usuario
-        if (StaticClass.CrossSceneInformation.Equals(this.transform.parent.name)) {
-            this.transform.parent.gameObject.SetActive(true);
-        } else {
-            this.transform.parent.gameObject.SetActive(false);
-        }
-
         //Cambiar de estado
-        if (StaticClass.exploreMode)
+        if (StaticClass.exploreMode == true)
         {
             cambioDeEstado();
             //TODO: Para la colision: hacer el cambio de transform (escalar, mover, rotar). 
@@ -52,8 +44,7 @@ public class PlaneExplorarController : MonoBehaviour
                 float x = Input.GetAxis("Horizontal");
                 //arriba y abajo
                 if (!isCollision || (isCollision && y > 0 && collidedName.Equals("Suelo")) || (isCollision && y < 0 && collidedName.Equals("Techo")))
-                    //if () //izquierda y derecha (paredes)
-                        transform.parent.Translate(new Vector3(0, 1.0f, 0) * sensitivity * y * Time.deltaTime, Space.World);
+                    transform.parent.Translate(new Vector3(0, 1.0f, 0) * sensitivity * y * Time.deltaTime, Space.World);
             } else if (estado.Equals("rotar")) {
                 float x = Input.GetAxis("Horizontal");
                 float y = Input.GetAxis("Vertical");
@@ -102,7 +93,11 @@ public class PlaneExplorarController : MonoBehaviour
     private void cambioDeEstado() {
         if (Input.GetButtonDown("R1")) {
             punteroActual.SetActive(false);
-            if (estado.Equals("mover")) {
+            Debug.Log("Antes: " + estado);
+            if (estado.Equals("jugador")) {
+                estado = "mover";
+                punteroActual = punteroMover;
+            } else if (estado.Equals("mover")) {
                 estado = "rotar";
                 punteroActual = punteroRotar;
             } else if (estado.Equals("rotar")) {
@@ -111,14 +106,12 @@ public class PlaneExplorarController : MonoBehaviour
             } else if (estado.Equals("escalar")) {
                 estado = "jugador";
                 punteroActual = punteroJugador;
-            } else if (estado.Equals("jugador")) {
-                estado = "mover";
-                punteroActual = punteroMover;
             } else {
                 estado = "jugador";
                 punteroActual = punteroJugador;
             }
             punteroActual.SetActive(true);
+            Debug.Log("Despues: " + estado);
         }
         if (estado.Equals("jugador"))
             jugador.SendMessage("Movimiento");

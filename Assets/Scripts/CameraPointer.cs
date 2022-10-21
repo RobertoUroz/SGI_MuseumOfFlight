@@ -62,7 +62,10 @@ public class CameraPointer : MonoBehaviour
             if (_gazedAtObject != hit.transform.gameObject)
             {
                 ready = true;
-                _gazedAtObject?.SendMessage("OnPointerExit");
+                if (_gazedAtObject?.tag == "IsActivable")
+                {
+                    _gazedAtObject?.SendMessage("OnPointerExit");
+                }                
                 _gazedAtObject = hit.transform.gameObject;
                 _gazeTime = 0.0f;
             } else if (_gazedAtObject.tag == "IsActivable") { // Check whether tag of gameobject is isActivable, for not having the reticle loading always
@@ -84,7 +87,10 @@ public class CameraPointer : MonoBehaviour
         else
         {
             // No GameObject detected in front of the camera.
-            _gazedAtObject?.SendMessage("OnPointerExit");
+            if (_gazedAtObject?.tag == "IsActivable")
+            {
+                _gazedAtObject?.SendMessage("OnPointerExit");
+            }
             ready = true;
             _gazedAtObject = null;
             _gazeTime = 0.0f;

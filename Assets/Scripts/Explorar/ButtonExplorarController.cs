@@ -8,7 +8,7 @@ public class ButtonExplorarController : MonoBehaviour
 
     public Camera camera;
 
-    public Transform player;
+    public GameObject player;
 
     public GameObject punteroJugador;
     public GameObject punteroMover;
@@ -38,17 +38,14 @@ public class ButtonExplorarController : MonoBehaviour
             punteroRotar.SetActive(false);
             punteroEscalar.SetActive(false);
 
-            Debug.Log("CCC");
-
+            player.SetActive(false);
             camera.SendMessage("FadeOut");
-            player.SetParent(NivelPrincipalParent);
-            player.position = StaticClass.playerCoords;
-            player.rotation = StaticClass.playerOrientation;
+            player.transform.position = StaticClass.playerCoords;
+            player.transform.rotation = StaticClass.playerOrientation;
             camera.SendMessage("FadeIn");
+            player.SetActive(true);   
         }
-        else  {
-            transform.parent.position = new Vector3(0, -1.873f, 0);
-        }
+        transform.parent.position = new Vector3(0, -1.873f, 0);
     }
 
     public void OnPointerExit()
