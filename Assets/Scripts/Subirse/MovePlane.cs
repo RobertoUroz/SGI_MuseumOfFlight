@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MovePlane : MonoBehaviour
 {
-    public float forwardSpeed = 1.0f, strafeSpeed = 7.5f, hoverSpeed = 5f;
+    public float forwardSpeed = 5.0f, strafeSpeed = 7.5f, hoverSpeed = 5f;
     private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
     private float forwardAcceleration = 2.5f, strafeAcceleration = 2f, hoverAcceleration = 2f;
 
@@ -15,17 +15,19 @@ public class MovePlane : MonoBehaviour
     private float rollInput;
     public float rollSpeed = 2.0f, rollAcceleration = 1.0f;
 
+    public Camera camera;
+
     void Start()
     {
     }
 
     void Update()
     {
-        rollInput = Mathf.Lerp(rollInput, Input.GetAxisRaw("Horizontal"), rollAcceleration * Time.deltaTime);
+        rollInput = Mathf.Lerp(rollInput, -1.0f * Input.GetAxisRaw("Horizontal"), rollAcceleration * Time.deltaTime);
 
-        transform.Rotate(-1.0f * Input.GetAxisRaw("Vertical") * lookRateSpeed * Time.deltaTime, Input.GetAxisRaw("Yaw") * lookRateSpeed * Time.deltaTime, rollInput * rollSpeed, Space.Self);
+        transform.Rotate(Input.GetAxisRaw("Vertical") * lookRateSpeed * Time.deltaTime, Input.GetAxisRaw("Yaw") * lookRateSpeed * Time.deltaTime, rollInput * rollSpeed, Space.Self);
 
-        activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, -1.0f * forwardSpeed, forwardAcceleration * Time.deltaTime);
+        activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, forwardSpeed, forwardAcceleration * Time.deltaTime);
         activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Yaw") * strafeSpeed, strafeAcceleration * Time.deltaTime);
         activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration * Time.deltaTime);
 
@@ -34,6 +36,7 @@ public class MovePlane : MonoBehaviour
 
         //Return to nivel principal
         if (Input.GetButtonDown("L1")) {
+            camera.SendMessage("FadeOut");
             SceneManager.LoadScene("NivelPrincipal");
         }
     }
