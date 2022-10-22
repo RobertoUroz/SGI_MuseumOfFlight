@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class ButtonExplorarController : MonoBehaviour
 {
 
+    public CharacterController controller;
+
     public Camera camera;
 
     public GameObject player;
@@ -32,18 +34,6 @@ public class ButtonExplorarController : MonoBehaviour
     {
         //Mira que nombre tiene y va a la escena indicada con el valor del texto que tiene el nombre avion
         if (this.name.Equals("Si")) {
-            //Punteros
-            punteroJugador.SetActive(true);
-            punteroMover.SetActive(false);
-            punteroRotar.SetActive(false);
-            punteroEscalar.SetActive(false);
-
-            player.SetActive(false);
-            camera.SendMessage("FadeOut");
-            player.transform.position = StaticClass.playerCoords;
-            player.transform.rotation = StaticClass.playerOrientation;
-            camera.SendMessage("FadeIn");
-            player.SetActive(true);   
         }
         transform.parent.position = new Vector3(0, -1.873f, 0);
     }
