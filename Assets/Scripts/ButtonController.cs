@@ -19,6 +19,8 @@ public class ButtonController : MonoBehaviour
     public GameObject explorarParent;
 
     public GameObject planes;
+
+    public GameObject modeloCargado;
     void Start()
     {
         
@@ -39,6 +41,7 @@ public class ButtonController : MonoBehaviour
             planes.SendMessage("CargarAvionCorrecto");
             camera.SendMessage("FadeIn");
             camera.SendMessage("Movimiento");
+            modeloCargado.SendMessage("BeginFadeInFadeOut");
         }
         else  {
             CustomSceneManager.OnLoadSceneAsync("Subirse");

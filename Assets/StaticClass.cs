@@ -11,4 +11,6 @@ public static class StaticClass
     public static Quaternion playerOrientation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
 
     public static bool exploreMode = true;
+
+    public static bool leverMode = false;
 }
