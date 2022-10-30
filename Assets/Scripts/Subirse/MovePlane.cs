@@ -37,7 +37,7 @@ public class MovePlane : MonoBehaviour
         //Return to nivel principal
         if (Input.GetButtonDown("L1")) {
             camera.SendMessage("FadeOut");
-            SceneManager.LoadScene("NivelPrincipal");
+            CustomSceneManager.OnLoadSceneAsync("NivelPrincipal");
         }
     }
 }
