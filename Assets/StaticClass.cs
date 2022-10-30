@@ -13,4 +13,6 @@ public static class StaticClass
     public static bool exploreMode = true;
 
     public static bool leverMode = false;
+
+    public static bool lucesMode = false;
 }

@@ -15,6 +15,6 @@ public class TextFadeOutAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.color = new Color(text.color.r, text.color.g, text.color.b, text.color.a - (Time.deltaTime / 10));   
+        text.color = new Color(text.color.r, text.color.g, text.color.b, text.color.a - (Time.deltaTime / 10));
     }
 }

@@ -2,32 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeverController : MonoBehaviour
+public class LucesController : MonoBehaviour
 {
-
     public GameObject punteroJugador;
 
     public GameObject punteroMover;
 
     public GameObject jugador;
 
-    public Animation animation;
-
-    //Estado de la puerta del hangar
-    private bool isClosed;
+    //Estado de las luces
+    private bool isDay;
 
     public AudioSource audio;
+
+    public Material dayMaterial;
+
+    public Material nightMaterial;
+
+    public Light luzDia;
+
+    public Light luzNoche;
 
     // Start is called before the first frame update
     void Start()
     {
-        isClosed = true;
+        isDay = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (StaticClass.leverMode)
+        if (StaticClass.lucesMode)
         {
             float y = Input.GetAxis("Vertical");
             if ((this.transform.parent.localRotation.x < 0.38268f && this.transform.parent.localRotation.x > -0.38268f)
@@ -38,20 +43,22 @@ public class LeverController : MonoBehaviour
             }
             if (this.transform.parent.localRotation.x >= 0.37f)
             {
-                //animation close
-                if (!isClosed) {
+                //lever posicion arriba
+                if (!isDay) {
                     audio.Play();
-                    isClosed = true;
-                    animation.Play("Close");
-                    animation["Close"].speed = 2.0f;
+                    RenderSettings.skybox=dayMaterial;
+                    luzDia.intensity = 1;
+                    luzNoche.intensity = 0;
+                    isDay = true;
                 }
             } else if (this.transform.parent.localRotation.x <= -0.37f){
-                //animation open
-                if (isClosed) {
+                //lever posicion abajo
+                if (isDay) {
                     audio.Play();
-                    isClosed = false;
-                    animation.Play("Open");
-                    animation["Open"].speed = 2.0f;
+                    RenderSettings.skybox=nightMaterial;
+                    luzDia.intensity = 0;
+                    luzNoche.intensity = 1;
+                    isDay = false;
                 }
             }
         }
@@ -71,7 +78,7 @@ public class LeverController : MonoBehaviour
         punteroJugador.SetActive(false);
         punteroMover.SetActive(true);
         StaticClass.exploreMode = false;
-        StaticClass.leverMode = true;
+        StaticClass.lucesMode = true;
 
         //cuando jugador acaba de realizarlo, completar, poner el tag a no activable y poder dejar el usuario que se mueva
 
@@ -83,6 +90,6 @@ public class LeverController : MonoBehaviour
         punteroJugador.SetActive(true);
         punteroMover.SetActive(false);
         StaticClass.exploreMode = true;
-        StaticClass.leverMode = false;
+        StaticClass.lucesMode = false;
     }
 }
